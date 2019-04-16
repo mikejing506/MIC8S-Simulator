@@ -1,0 +1,66 @@
+00 0000 0000 0000 : NOP		//
+00 0000 0000 0001 : CLRW		// W = 0, Z
+00 0000 0000 0010 : OPTION	// OPTION = W
+00 0000 0000 0011 : SLEEP	// TO/PD
+00 0000 0000 0100 : CLRWDT	// TO/PD;
+00 0000 0000 0fff : TRIS f	// TRIS[5/6/7] = W 
+00 0000 0000 1000 : RETURN	// PC = TOS
+00 0000 0000 1001 : RETFIE	// PC = TOS, GIE = 1
+00 0000 0000 1010 : DAA		// bin to dec after add
+00 0000 0000 1011 : DAS		// bin to dec after sub
+00 0000 0000 1100 : MOVWP	// [W] = PMEM[PCH:FSR]
+00 0000 0000 1101 : MOVWP++	// [W] = PMEM[PCH:FSR++]
+00 0000 0000 1110 : MOVWP--	// [W] = PMEM[PCH:--FSR]
+00 0000 0000 1111 : INT		// software interrupt
+00 0000 0001 0000 : BRSZ k13	// if(Z) PC = k13
+00 0000 0001 0001 : BRCZ k13	// if(~Z) PC = k13
+00 0000 0001 0010 : BRSC k13	// if(C) PC = k13
+00 0000 0001 0011 : BRCC k13	// if(~C) PC = k13
+00 0000 0001 0100 : MOVLC k13	// LCR = k13[7:0]
+00 0000 0001 0101 : LOOP K13	// if(LCR!=0) {LCR--, PC = k13}
+00 0000 0001 0110 : MOVLT k13	// {PCH, FSR} = k13
+00 0000 0001 0111 : MOVLI K13	// FSR = k13[7:0]
+00 0000 0001 1000 : IMOVW	// W = *(FSR)
+00 0000 0001 1001 : IMOVW++	// W = *(FSR++)
+00 0000 0001 1010 : IMOVW--	// W = *(--FSR)
+00 0000 0001 1100 : IMOVF	// *(FSR) = W
+00 0000 0001 1101 : IMOVF++	// *(FSR++) = W
+00 0000 0001 1110 : IMOVF--	// *(--FSR) = W
+00 0000 0010 0qqq : MOVLB q	// BSR = k
+00 0000 1fff ffff : MOVWF f	// f = W
+00 0001 0000 qqqq : IMOVW +q	// W = *(FSR+q)
+00 0001 0001 qqqq : IMOVW -q	// W = *(FSR-q)
+00 0001 0010 qqqq : IMOVF +q	// *(FSR+q) = W
+00 0001 0011 qqqq : IMOVF -q	// *(FSR-q) = W
+00 0001 1fff ffff : CLRF f	// f = 0, Z
+00 0010 dfff ffff : SUBWF f, d	// [W/f] = f - W, C/DC/Z
+00 0011 dfff ffff : DECF f, d	// [W/f] = f - 1, Z
+00 0100 dfff ffff : IORWF f, d	// [W/f] = W | f, Z
+00 0101 dfff ffff : ANDWF f, d	// [W/f] = W & f, Z
+00 0110 dfff ffff : XORWF f, d	// [W/f] = W ^ f, Z
+00 0111 dfff ffff : ADDWF f, d	// [W/f] = W + f, C/DC/Z
+00 1000 dfff ffff : MOVF f, d	// [W/f] = f, Z
+00 1001 dfff ffff : COMF f, d	// [W/f] = ~f + 1, Z
+00 1010 dfff ffff : INCF f, d	// [W/f] = f + 1, Z
+00 1011 dfff ffff : DECFSZ f, d	// [W/f] = f - 1, if(Z) PC = PC + 2
+00 1100 dfff ffff : RRF f, d	// [W/f] = {C, f[6:0]}, C = f[0], C
+00 1101 dfff ffff : RLF f, d	// [W/f] = {f[6:0], C}, C = f[7], C
+00 1110 dfff ffff : SWAPF f, d	// [W/f] = {f[7:4] <=> f[3:0]}
+00 1111 dfff ffff : INCFSZ f, d	// [W/f] = f + 1, if(Z) PC = PC + 2
+01 00bb bfff ffff : BCF f, b	// f[b] = 0
+01 01bb bfff ffff : BSF f, b	// f[b] = 1
+01 10bb bfff ffff : BTFSC f, b	// if(~f[b]) PC = PC + 2
+01 11bb bfff ffff : BTFSS f, b	// if(f[b]) PC = PC + 2
+10 0kkk kkkk kkkk : GOTO k	// PC = k
+11 0kkk kkkk kkkk : CALL k	// PCL = k, PC -> TOS
+10 1000 kkkk kkkk : SUBLW k	// W = k - W, C/DC/Z
+10 1001 kkkk kkkk : ADDLW k	// W = k + W, C/DC/Z
+10 1100 kkkk kkkk : ANDLW k	// W = W & k, Z
+10 1101 kkkk kkkk : XORLW k	// W = W ^ k, Z
+11 1000 kkkk kkkk : IORLW k	// W = k | w, z
+11 1010 dfff ffff : ADCWF f, d	// [W/f] = f + W + C, C/DC/Z
+11 1011 dfff ffff : SBCWF f, d	// [W/f] = f - W + C, C/DC/Z
+11 1100 kkkk kkkk : RETLW k	// W = k, PC = TOS
+11 1101 kkkk kkkk : MOVLW k	// W = k
+
+
